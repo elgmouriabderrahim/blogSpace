@@ -72,20 +72,16 @@ CREATE TABLE comments (
 
 CREATE TABLE likes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    article_id INT NOT NULL,
-    reader_id INT NOT NULL,
+    reader_id INT NOT NULL,     
+    article_id INT DEFAULT NULL,
+    comment_id INT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_like_article
-        FOREIGN KEY (article_id)
-        REFERENCES articles(id)
-        ON DELETE CASCADE,
-
-    CONSTRAINT fk_like_reader
-        FOREIGN KEY (reader_id)
-        REFERENCES users(id)
-        ON DELETE CASCADE,
-
-    CONSTRAINT unique_like UNIQUE (article_id, reader_id)
+    CONSTRAINT fk_like_reader FOREIGN KEY (reader_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_like_article FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE,
+    CONSTRAINT fk_like_comment FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE, 
+    CHECK (
+        (article_id IS NOT NULL AND comment_id IS NULL)
+        OR
+        (article_id IS NULL AND comment_id IS NOT NULL)
+    )
 );
-
