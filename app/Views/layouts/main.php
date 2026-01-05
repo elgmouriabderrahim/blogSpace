@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><?= isset($title) ? htmlspecialchars($title) : 'Mini MVC' ?></title>
+    <title><?= isset($title) ? htmlspecialchars($title) : 'Home' ?></title>
 </head>
 <body>
 
