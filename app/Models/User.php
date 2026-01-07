@@ -17,7 +17,7 @@ abstract class User
         $this->lastName  = $lastName;
         $this->userName  = $userName;
         $this->email     = $email;
-        $this->password  = password_hash($password, PASSWORD_DEFAULT);
+        $this->password  = $password;
         $this->role      = $role;
         $this->createdAt = new \DateTimeImmutable();
     }

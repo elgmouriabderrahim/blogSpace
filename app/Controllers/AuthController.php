@@ -6,8 +6,7 @@ use App\Services\AuthServices;
 
 class AuthController extends Controller
 {
-    public function register()
-    {
+    public function register(){
         $errors = [];
         $old = [];
 
@@ -41,8 +40,36 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login()
-    {
-        $this->view('login', ['title' => 'Blogspace - Log In']);
+    public function login(){
+        $errors = [];
+        $old = [];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
+
+            $old['email'] = $email;
+
+            $errors = AuthServices::login($email, $password);
+
+            if (empty($errors)) {
+                header('Location: /dashboard');
+                exit;
+            }
+        }
+
+        $this->view('login', [
+            'title' => 'Blogspace - Log In',
+            'errors' => $errors,
+            'old' => $old
+        ]);
+    }
+
+    public function logout(){
+        $_SESSION = [];
+        session_destroy();
+
+        header('Location: /login');
+        exit;
     }
 }
