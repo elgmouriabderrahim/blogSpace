@@ -8,5 +8,6 @@ $router->get('/', "HomeController@index");
 $router->post('/register', "AuthController@register");
 $router->get('/register', "AuthController@register");
 $router->get('/login', "AuthController@login");
+$router->post('/login', "AuthController@login");
 $router->get('/logout', "AuthController@logout");
 $router->dispatch();
