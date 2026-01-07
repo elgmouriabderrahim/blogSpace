@@ -56,11 +56,7 @@
         </div>
         <span class="text-red-500 block mt-1 text-sm"><?= htmlspecialchars($errors['cpassword'] ?? '') ?></span>
       </div>
-  
-      <div class="flex items-center mb-6">
-        <input type="checkbox" class="mr-2">
-        <span class="text-gray-400 text-sm">I agree to the <a href="#" class="text-blue-500">Terms of Service</a> and <a href="#" class="text-blue-500">Privacy Policy</a></span>
-      </div>
+
   
       <button class="w-full py-3 bg-blue-600 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer">Create Account</button>
     </form>

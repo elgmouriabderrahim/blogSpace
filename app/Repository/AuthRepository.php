@@ -43,4 +43,19 @@ class AuthRepository{
             ':createdAt' => $reader->getCreatedAt()->format('Y-m-d H:i:s'),
         ]);
     }
+    public static function getUserByEmail(string $email) {
+    $pdo = Database::getInstance()->getConnection();
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
+    $stmt->execute([':email' => $email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($user){
+        if($user['role'] === 'Reader')
+            return new Reader($user['firstName'] ,$user['lastName'] ,$user['userName'] ,$user['email'] ,$user['password']);
+        if($user['role'] === 'Author')
+            return new Author($user['firstName'] ,$user['lastName'] ,$user['userName'] ,$user['email'] ,$user['password']);
+        if($user['role'] === 'Admin')
+            return new Admin($user['firstName'] ,$user['lastName'] ,$user['userName'] ,$user['email'] ,$user['password']);
+    }
+    return $user ?: null;
+}
 }
