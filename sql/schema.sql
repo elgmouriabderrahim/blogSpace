@@ -3,9 +3,9 @@ USE blogSpace;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    firstname VARCHAR(100) NOT NULL,
-    lastname VARCHAR(100) NOT NULL,
-    username VARCHAR(100) NOT NULL UNIQUE,
+    firstName VARCHAR(100) NOT NULL,
+    lastName VARCHAR(100) NOT NULL,
+    userName VARCHAR(100) NOT NULL UNIQUE,
     email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role ENUM('Reader','Author','Admin') NOT NULL,

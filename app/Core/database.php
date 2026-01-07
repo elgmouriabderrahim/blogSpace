@@ -1,6 +1,11 @@
 <?php
-require_once __DIR__ . "/../../config/env.php";
+namespace App\Core;
 
+use PDO;
+use PDOException;
+use RuntimeException;
+
+require_once __DIR__ . "/../../config/env.php";
 class Database
 {
     private static ?Database $instance = null;
