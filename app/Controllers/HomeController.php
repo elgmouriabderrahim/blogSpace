@@ -5,7 +5,7 @@ use App\Core\Controller;
 
 class HomeController extends Controller
 {
-    public function index(){
-        $this->view('home', ['title' => 'home page']);
+    public function dashboard(){
+        $this->view('Admin/dashboard', ['title' => 'Blog Space - dashboard']);
     }
 }
