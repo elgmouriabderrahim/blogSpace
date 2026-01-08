@@ -7,8 +7,22 @@ class AdminUserService{
         return AdminUserRepository::findAll();
     }
 
-    public static function toggleBan(int $userId): void
+    public static function banUser(int $userId): void
     {
-        AdminUserRepository::toggleBan($userId);
+        $user = AdminUserRepository::findById($userId);
+
+        if (!$user || $user['role'] !== 'Reader')
+            return;
+
+        AdminUserRepository::banUser($userId);
+    }
+    public static function unbanUser(int $userId): void
+    {
+        $user = AdminUserRepository::findById($userId);
+
+        if (!$user || $user['role'] !== 'Reader')
+            return;
+        
+        AdminUserRepository::unbanUser($userId);
     }
 }

@@ -10,7 +10,7 @@ class AdminDashboardController extends Controller
         $stats = AdminDashboardService::getDashboardStats();
 
         $this->view('admin/dashboard', [
-            'title' => 'Admin Dashboard',
+            'title' => 'Blog Space - Admin Dashboard',
             'stats' => $stats
         ]);
     }
