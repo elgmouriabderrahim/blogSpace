@@ -4,6 +4,7 @@ class Helpers {
     static function sanitize(string $data): string {
         return trim($data);
     }
+
     static function validateFirstName($firstName){
         $firstName = self::sanitize($firstName);
 
@@ -15,6 +16,7 @@ class Helpers {
 
         return [];
     }
+
     static function validateLastName($lastName){
         $lastName = self::sanitize($lastName);
 
@@ -26,6 +28,7 @@ class Helpers {
 
         return [];
     }
+
     static function validateUserName($userName){
         $userName = self::sanitize($userName);
 
@@ -37,6 +40,7 @@ class Helpers {
 
         return [];
     }
+
     static function validateEmail($email){
         $email = self::sanitize($email);
 
@@ -48,6 +52,7 @@ class Helpers {
         
         return [];
     }
+
     static function validatePassword($password){
         if($password === '')
             return ['password' => 'Password is required'];
@@ -57,6 +62,7 @@ class Helpers {
 
         return [];
     }
+
     static function validateCPassword($password, $cpassword){
         if($cpassword === '')
             return ['cpassword' => 'Password confirmation is required'];
@@ -64,5 +70,17 @@ class Helpers {
             return ['cpassword' => 'password dont match'];
 
         return [];
+    }
+
+    static function validatecategory($categoryname){
+        $categoryname = self::sanitize($categoryname);
+
+        if($categoryname === '')
+            return 'category name is required';
+
+        if(!preg_match('/^[\p{L} \d]{5,50}$/u', $categoryname))
+            return 'Invalid category name';
+        
+        return null;
     }
 }

@@ -9,7 +9,7 @@ class AdminDashboardService{
         return [
             'users'      => AdminDashboardRepository::countUsers(),
             'banned'     => AdminDashboardRepository::countBannedUsers(),
-            'posts'      => AdminDashboardRepository::countArticles(),
+            'articles'      => AdminDashboardRepository::countArticles(),
             'categories' => AdminDashboardRepository::countCategories(),
         ];
     }
