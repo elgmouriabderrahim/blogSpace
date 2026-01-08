@@ -31,15 +31,14 @@
   </div>
 
   <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-    <p class="text-gray-400">Pending Users</p>
+    <p class="text-gray-400">banned Users</p>
     <p class="text-3xl font-bold text-orange-400">
-      <?= isset($stats['pending_users']) ? (int)$stats['pending_users'] : 0 ?>
+      <?= isset($stats['banned']) ? (int)$stats['banned'] : 0 ?>
     </p>
   </div>
 
 </div>
 
-<!-- Recent activity -->
 <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
   <h2 class="text-xl font-semibold mb-4">Recent Activity</h2>
 

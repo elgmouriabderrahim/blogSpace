@@ -10,7 +10,12 @@ $router->get('/admin/dashboard', "AdminDashboardController@index");
 
 $router->get('/admin/users', "AdminUserController@index");
 
-$router->get('/admin/categories', "CategoriesController@index");
+$router->post('/admin/users/ban', "AdminUserController@banUser");
+$router->post('/admin/users/unban', "AdminUserController@unbanUser");
+
+$router->get('/admin/categories', "AdminCategoryController@index");
+$router->post('/admin/categories/create', "AdminCategoryController@create");
+$router->post('/admin/categories/delete', "AdminCategoryController@delete");
 
 $router->post('/register', "AuthController@register");
 $router->get('/register', "AuthController@register");
