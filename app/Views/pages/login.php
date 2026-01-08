@@ -1,4 +1,4 @@
-<div class="w-[90%] lg:max-w-lg p-6">
+<div class="w-[90%] lg:max-w-lg p-6 self-center">
     <h1 class="text-3xl font-bold mb-2 text-center">Welcome Back!</h1>
     <p class="text-gray-400 mb-6 text-center">Enter your credentials to access your blog Account</p>
 
