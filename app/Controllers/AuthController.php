@@ -53,7 +53,7 @@ class AuthController extends Controller
             $errors = AuthServices::login($email, $password);
 
             if (empty($errors)) {
-                header('Location: /dashboard');
+                header('Location: /');
                 exit;
             }
         }

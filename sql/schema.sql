@@ -21,6 +21,7 @@ CREATE TABLE articles (
     content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NULL,
+    status ENUM('draft','published') NOT NULL DEFAULT 'draft';
 
     CONSTRAINT fk_article_author
         FOREIGN KEY (author_id)
