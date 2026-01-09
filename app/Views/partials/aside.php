@@ -1,11 +1,24 @@
 <aside class="w-72 bg-gray-900/80 backdrop-blur border-r border-gray-700 flex flex-col">
 
         <div class="px-6 py-6 text-xl font-bold text-white tracking-wide">
-            Admin Dashboard
+            <?php
+                if($_SESSION['user_role'] === 'Admin')
+                    echo 'Admin Dashboard';
+                elseif($_SESSION['user_role'] === 'Author')
+                    echo 'Admin Dashboard';
+                else
+                    echo'Blog Space';
+            ?>
         </div>
 
         <nav class="flex-1 px-4 space-y-1 text-sm">
 
+            <a href="/"
+               class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition">   
+                <i class="fa-solid fa-house"></i>
+                Home
+            </a>
+            <?php if($_SESSION['user_role'] === 'Admin'):?>
             <a href="/admin/dashboard"
                class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition">   
                 <i class="fa-solid fa-chart-line"></i>
@@ -23,7 +36,14 @@
                 <i class="fa-solid fa-tags"></i>
                 Categories
             </a>
-
+            <?php endif ?>
+            <?php if($_SESSION['user_role'] === 'Author'):?>
+            <a href="/author/dashboard"
+               class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard
+            </a>
+            <?php endif ?>
         </nav>
 
         <div class="p-4 border-t border-gray-700">

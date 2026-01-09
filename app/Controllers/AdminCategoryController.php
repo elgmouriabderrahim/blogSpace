@@ -4,6 +4,8 @@ use App\Services\AdminCategoryService;
 use App\Helpers\Helpers;
 use App\Core\Controller;
 
+use App\Middlewears\Auth;
+
 
 class AdminCategoryController extends Controller
 {

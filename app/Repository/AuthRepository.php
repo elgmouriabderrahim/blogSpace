@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Core\Database;
 use App\Models\Reader;
+use App\Models\Admin;
+use App\Models\Author;
 use PDO;
 
 class AuthRepository{
