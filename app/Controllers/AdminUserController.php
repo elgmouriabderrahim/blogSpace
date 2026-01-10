@@ -3,6 +3,9 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Services\AdminUserService;
 
+use App\Middlewears\Auth;
+Auth::onlyAdmin();
+
 class AdminUserController extends Controller
 {
     public function index(){
