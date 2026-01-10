@@ -33,6 +33,17 @@ $router->post('/author/articles/edit', "AuthorArticlesController@editform");
 $router->post('/author/articles/delete', "AuthorArticlesController@delete");
 
 
+$router->post('/articles/show', 'ReaderArticleController@show');
+
+$router->post('/reader/articles/like', 'ReaderLikeController@toggleArticleLike');
+$router->post('/reader/articles/comment', 'ReaderCommentController@store');
+
+$router->post('/reader/comments/like', 'ReaderLikeController@toggleCommentLike');
+$router->post('/reader/comments/delete', 'ReaderCommentController@delete');
+
+
+
+
 $router->post('/register', "AuthController@registerform");
 $router->get('/register', "AuthController@register");
 
