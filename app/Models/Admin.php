@@ -3,16 +3,8 @@ namespace App\Models;
 
 class Admin extends User {
 
-    public function __construct(string $firstName ,string $lastName ,string $userName ,string $email ,string $password){
-        parent::__construct(
-            $firstName,
-            $lastName,
-            $userName,
-            $email,
-            $password,
-            'Admin'
-        );
+    public function __construct(array $data){
+        parent::__construct($data['role'] ? $data:[...$data, 'role' => 'Admin']);
     }
-    public function manageCategories() {}
-    public function manageUsers() {}
+
 }

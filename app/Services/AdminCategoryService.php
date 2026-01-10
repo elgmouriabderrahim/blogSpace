@@ -1,12 +1,19 @@
 <?php
 namespace App\Services;
-
+use App\Helpers\Helpers;
 use App\Repository\AdminCategoryRepository;
 class AdminCategoryService{
-    public static function getAll(): array
+    public static function getAllCategories(): array
     {
-        return AdminCategoryRepository::findAll();
+        return AdminCategoryRepository::getAllCategories();
     }
+
+    public static function validateCategory($categoryName)
+    {
+        return Helpers::validateCategory($categoryName);
+    }
+
+
 
     public static function isCategoryExists(string $name): bool
     {
@@ -18,7 +25,7 @@ class AdminCategoryService{
         AdminCategoryRepository::create($name);
     }
 
-    public static function delete(int $id): void
+    public static function delete($id): void
     {
         AdminCategoryRepository::delete($id);
     }

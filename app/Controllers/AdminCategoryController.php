@@ -11,7 +11,7 @@ class AdminCategoryController extends Controller
 {
     public function index()
     {
-        $categories = AdminCategoryService::getAll();
+        $categories = AdminCategoryService::getAllCategories();
 
         $error = $_SESSION['error'] ?? null;
         unset($_SESSION['error']);
@@ -30,19 +30,20 @@ class AdminCategoryController extends Controller
     public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $error = Helpers::validateCategory($_POST['category_name'] ?? '');
+            $categoryName = $_POST['category_name'] ?? '';
+            $error = AdminCategoryService::validateCategory($categoryName);
 
             if (!$error) {
-                if(AdminCategoryService::isCategoryExists($_POST['category_name'])){
+                if(AdminCategoryService::isCategoryExists($categoryName)){
                     $error = 'catrgory already exists';
                     $_SESSION['error'] = $error;
-                    $_SESSION['old_category_name'] = $_POST['category_name'];
+                    $_SESSION['old_category_name'] = $categoryName;
                 }
                 else
-                    AdminCategoryService::create($_POST['category_name']);
+                    AdminCategoryService::create($categoryName);
             } else {
                 $_SESSION['error'] = $error;
-                $_SESSION['old_category_name'] = $_POST['category_name'];
+                $_SESSION['old_category_name'] = $categoryName;
             }
         }
 
@@ -52,7 +53,7 @@ class AdminCategoryController extends Controller
 
     public function delete()
     {
-        AdminCategoryService::delete((int)($_POST['category_id'] ?? 0));
+        AdminCategoryService::delete(($_POST['category_id'] ?? null));
 
         header('Location: /admin/categories');
         exit;

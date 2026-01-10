@@ -7,61 +7,52 @@ use App\Services\AuthServices;
 class AuthController extends Controller
 {
     public function register(){
-        $errors = [];
-        $old = [];
+        $this->view('Register', ['title'  => 'Blog space - Register']);
+    }
+    public function registerform(){
+        $inputData = [
+        'firstName' => $_POST['firstName'],
+        'lastName'  => $_POST['lastName'],
+        'userName'  => $_POST['userName'],
+        'email'     => $_POST['email'],
+        'password'  => $_POST['password'],
+        'cpassword' => $_POST['cpassword']
+        ];
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $firstName = $_POST['firstName'] ?? '';
-            $lastName  = $_POST['lastName'] ?? '';
-            $userName  = $_POST['userName'] ?? '';
-            $email     = $_POST['email'] ?? '';
-            $password  = $_POST['password'] ?? '';
-            $cpassword = $_POST['cpassword'] ?? '';
+        $errors = AuthServices::register($inputData);
 
-            $old = [
-                'firstName' => $firstName,
-                'lastName'  => $lastName,
-                'userName'  => $userName,
-                'email'  => $email,
-            ];
-
-            $errors = AuthServices::register($firstName, $lastName, $userName, $email, $password, $cpassword);
-
-            if (empty($errors)) {
-                header('Location: /login');
-                exit;
-            }
+        if (empty($errors)) {
+            header('Location: /login');
+            exit;
         }
 
         $this->view('Register', [
             'title'  => 'Blog space - Register',
             'errors' => $errors,
-            'old'    => $old
+            'inputData'    => $inputData
         ]);
     }
 
     public function login(){
-        $errors = [];
-        $old = [];
+        $this->view('login', ['title' => 'Blogspace - Log In']);
+    }
+    public function loginform(){
+        $inputData = [
+            'email' => $_POST['email'],
+            'password' => $_POST['password']
+        ];
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
+        $errors = AuthServices::login($inputData);
 
-            $old['email'] = $email;
-
-            $errors = AuthServices::login($email, $password);
-
-            if (empty($errors)) {
-                header('Location: /');
-                exit;
-            }
+        if (empty($errors)) {
+            header('Location: /');
+            exit;
         }
 
         $this->view('login', [
             'title' => 'Blogspace - Log In',
             'errors' => $errors,
-            'old' => $old
+            'inputData' => $inputData
         ]);
     }
 
