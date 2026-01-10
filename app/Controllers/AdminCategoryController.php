@@ -5,7 +5,7 @@ use App\Helpers\Helpers;
 use App\Core\Controller;
 
 use App\Middlewears\Auth;
-
+Auth::onlyAdmin();
 
 class AdminCategoryController extends Controller
 {

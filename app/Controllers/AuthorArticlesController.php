@@ -1,6 +1,10 @@
 <?php namespace App\Controllers;
 use App\Core\Controller;
 use App\Services\AuthorArticleService;
+
+use App\Middlewears\Auth;
+Auth::isAuthor();
+
 class AuthorArticlesController extends Controller
 {
     public function dashboard()

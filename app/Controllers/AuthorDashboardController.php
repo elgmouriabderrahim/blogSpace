@@ -5,6 +5,9 @@ use App\Core\Controller;
 
 use App\Services\AuthorDashboardService;
 
+use App\Middlewears\Auth;
+Auth::isAuthor();
+
 class AuthorDashboardController extends Controller
 {
     public function index(){

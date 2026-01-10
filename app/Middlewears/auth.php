@@ -1,20 +1,34 @@
 <?php
-namespace App\Midllewears;
+namespace App\Middlewears;
 class Auth {
-    public static function isUser(){
-        if(!isset($_SESSION['user_id']))
+    public static function onlyUser(){
+        if(!isset($_SESSION['user_id'])){
             header("location: /");
+            exit;
+        }
     }
-    public static function isAdmin(){
-        if(!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== "Admin")
+    public static function onlyGuest(){
+        if(isset($_SESSION['user_id'])){
             header("location: /");
+            exit;
+        }
     }
-    public static function isAuthor(){
-        if(!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== "Author")
+    public static function onlyAdmin(){
+        if(!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== "Admin"){
             header("location: /");
+            exit;
+        }
     }
-    public static function isReader(){
-        if(!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== "Author")
+    public static function onlyAuthor(){
+        if(!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== "Author"){
             header("location: /");
+            exit;
+        }
+    }
+    public static function onlyReader(){
+        if(!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== "Author"){
+            header("location: /");
+            exit;
+        }
     }
 }

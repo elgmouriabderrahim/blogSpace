@@ -4,6 +4,9 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Services\AuthServices;
 
+use App\Middlewears\Auth;
+Auth::onlyGuest();
+
 class AuthController extends Controller
 {
     public function register(){
