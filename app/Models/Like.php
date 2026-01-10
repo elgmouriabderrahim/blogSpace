@@ -7,6 +7,4 @@ class Like {
     private int $article_id;
     private int $comment_id;
 
-    public function user() {}
-    public function article() {}
 }

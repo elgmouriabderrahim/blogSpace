@@ -29,19 +29,17 @@
 
   <?php foreach ($categories as $category): ?>
     <tr class="border-t border-gray-700">
-      <td class="p-4"><?= (int)$category['id'] ?></td>
-      <td class="p-4"><?= htmlspecialchars($category['name']) ?></td>
+      <td class="p-4"><?= $category->getId(); ?></td>
+      <td class="p-4"><?= htmlspecialchars($category->getName()) ?></td>
       <td class="p-4 text-right space-x-2">
-        <form
-          action="/admin/categories/delete"
-          method="post"
-          class="inline"
-        >
-          <input type="hidden" name="category_id" value="<?= (int)$category['id'] ?>">
-          <button type="submit" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm"
-          >
+        <form action="/admin/categories/delete" method="post" class="inline">
+
+          <input type="hidden" name="category_id" value="<?= $category->getId() ?>">
+
+          <button type="submit" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">
             Delete
           </button>
+
         </form>
 
       </td>

@@ -11,7 +11,7 @@
                     type="email"
                     name="email"
                     placeholder="Enter your email address"
-                    value="<?= htmlspecialchars($old['email'] ?? '') ?>"
+                    value="<?= htmlspecialchars($inputData['email'] ?? '') ?>"
                     class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
@@ -25,6 +25,7 @@
                 <input
                     type="password"
                     name="password"
+                    value="<?= htmlspecialchars($inputData['password'] ?? '') ?>"
                     placeholder="Enter your password"
                     class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />

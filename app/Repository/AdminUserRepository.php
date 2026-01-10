@@ -1,26 +1,30 @@
 <?php
 namespace App\Repository;
 
+use App\Helpers\Helpers;
+
 use App\Core\Database;
 use PDO;
 
 class AdminUserRepository
 {
-    public static function findAll(): array{
+    public static function getAllUsers(): array{
         $stmt = Database::getInstance()
             ->getConnection()
             ->query("SELECT * FROM users");
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return array_map(fn($user) => Helpers::createUser($user),$users);
     }
 
-    public static function findById(int $id): ?array{
+    public static function findById(int $id) {
         $stmt = Database::getInstance()
             ->getConnection()
             ->prepare("SELECT * FROM users WHERE id = :id");
 
         $stmt->execute(['id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        return Helpers::createUser($stmt->fetch(PDO::FETCH_ASSOC) ?: null);
     }
 
     public static function banUser(int $id): void{
