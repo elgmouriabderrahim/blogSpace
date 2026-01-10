@@ -28,7 +28,7 @@
           <?= $article->getCommentsCount() ?>
         </span>
 
-        <?php if ($userRole === 'Reader'): ?>
+        <?php if ( $userRole === 'Reader'): ?>
           <form method="post" action="/articles/like">
             <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
             <button class="text-gray-400 hover:text-red-500 transition" title="Like article">

@@ -4,6 +4,9 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Services\AdminDashboardService;
 
+use App\Middlewears\Auth;
+Auth::onlyAdmin();
+
 class AdminDashboardController extends Controller
 {
     public function index(){
