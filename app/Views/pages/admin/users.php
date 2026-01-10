@@ -11,6 +11,7 @@
       <th class="p-4 text-left">Full Name</th>
       <th class="p-4 text-left">Username</th>
       <th class="p-4 text-left">Email</th>
+      <th class="p-4 text-left">Member Since</th>
       <th class="p-4 text-left">Role</th>
       <th class="p-4 text-left">Status</th>
       <th class="p-4 text-right">Actions</th>
@@ -21,13 +22,14 @@
   <?php foreach ($users as $user): ?>
 
     <?php
-      $id        = (int)($user['id'] ?? 0);
-      $firstName = $user['firstName'] ?? '';
-      $lastName  = $user['lastName'] ?? '';
-      $username  = $user['userName'] ?? '';
-      $email     = $user['email'] ?? '';
-      $role      = $user['role'] ?? 'Reader';
-      $isBanned  = ($user['is_banned'] ?? '0') === '1';
+      $id        = $user->getId();
+      $firstName = $user->getFirstName();
+      $lastName  = $user->getLastName();
+      $username  = $user->getUserName();
+      $email     = $user->getEmail();
+      $role      = $user->getRole();
+      $createdAt = $user->getCreatedAt();
+      $isBanned  = ($user->isBanned() ?? '0') === '1';
       $canBan    = ($role === 'Reader');
     ?>
 
@@ -44,6 +46,10 @@
 
       <td class="p-4">
         <?= htmlspecialchars($email) ?>
+      </td>
+      
+      <td class="p-4">
+        <?= $createdAt?>
       </td>
 
       <td class="p-4">
@@ -63,6 +69,7 @@
           <span class="text-green-400">Active</span>
         <?php endif; ?>
       </td>
+
 
       <td class="p-4 text-right">
         <?php if ($canBan): ?>

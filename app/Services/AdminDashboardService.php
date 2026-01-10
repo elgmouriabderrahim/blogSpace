@@ -13,4 +13,8 @@ class AdminDashboardService{
             'categories' => AdminDashboardRepository::countCategories(),
         ];
     }
+    public static function getRecentActivities($nbr): array
+    {
+        return AdminDashboardRepository::getRecentActivities($nbr);
+    }
 }

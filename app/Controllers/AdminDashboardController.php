@@ -8,10 +8,12 @@ class AdminDashboardController extends Controller
 {
     public function index(){
         $stats = AdminDashboardService::getDashboardStats();
+        $activities = AdminDashboardService::getRecentActivities(10);
 
         $this->view('admin/dashboard', [
             'title' => 'Blog Space - Admin Dashboard',
-            'stats' => $stats
+            'stats' => $stats,
+            'activities' => $activities
         ]);
     }
 }

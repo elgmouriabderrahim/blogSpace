@@ -9,9 +9,15 @@
     <input
       type="text"
       name="title"
+      value="<?= $old['title'] ?? ''?>"
       class="w-full bg-gray-900 border border-gray-600 px-4 py-2 rounded"
       placeholder="Article title"
     >
+    <?php if (isset($errors['title'])): ?>
+        <div class="text-red-500  bottom-0">
+          <?= htmlspecialchars($errors['title']) ?>
+        </div>
+    <?php endif; ?>
   </div>
 
   <div>
@@ -21,18 +27,25 @@
       rows="8"
       class="w-full bg-gray-900 border border-gray-600 px-4 py-2 rounded"
       placeholder="Write your article..."
-    ></textarea>
+    ><?= $old['content'] ?? ''?></textarea>
+    <?php if (isset($errors['content'])): ?>
+        <div class="text-red-500 bottom-0">
+          <?= htmlspecialchars($errors['content']) ?>
+        </div>
+    <?php endif; ?>
   </div>
 
   <div>
     <label class="block mb-2 text-gray-400">Status</label>
-    <select
-      name="status"
-      class="w-full bg-gray-900 border border-gray-600 px-4 py-2 rounded"
-    >
-      <option value="draft">Draft</option>
-      <option value="published">Published</option>
+    <select name="status" class="w-full bg-gray-900 border border-gray-600 px-4 py-2 rounded">
+      <option value="Draft"  <?= ($old['status'] ?? 'Draft') === 'Draft' ? 'selected' : '' ?>>Draft</option>
+      <option value="Published" <?= ($old['status'] ?? '') === 'Published' ? 'selected' : '' ?>>Published</option>
     </select>
+    <?php if (isset($errors['status'])): ?>
+        <div class="text-red-500 bottom-0">
+          <?= htmlspecialchars($errors['status']) ?>
+        </div>
+    <?php endif; ?>
   </div>
 
   <button

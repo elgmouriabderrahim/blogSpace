@@ -8,6 +8,8 @@ use App\Models\Admin;
 use App\Models\Author;
 use PDO;
 
+use App\Helpers\Helpers;
+
 class AuthRepository{
     public static function usernameExists(string $userName): bool{
         $pdo = Database::getInstance()->getConnection();
@@ -42,7 +44,7 @@ class AuthRepository{
             ':email'      => $reader->getEmail(),
             ':password'   => $reader->getPassword(),
             ':role'       => $reader->getRole(),
-            ':createdAt' => $reader->getCreatedAt()->format('Y-m-d H:i:s'),
+            ':createdAt' => $reader->getCreatedAt(),
         ]);
     }
     public static function getUserByEmail(string $email) {
@@ -50,14 +52,9 @@ class AuthRepository{
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
     $stmt->execute([':email' => $email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if($user){
-        if($user['role'] === 'Reader')
-            return new Reader($user['firstName'] ,$user['lastName'] ,$user['userName'] ,$user['email'] ,$user['password']);
-        if($user['role'] === 'Author')
-            return new Author($user['firstName'] ,$user['lastName'] ,$user['userName'] ,$user['email'] ,$user['password']);
-        if($user['role'] === 'Admin')
-            return new Admin($user['firstName'] ,$user['lastName'] ,$user['userName'] ,$user['email'] ,$user['password']);
-    }
-    return $user ?: null;
+    if($user)
+        return Helpers::createUser($user);
+    else
+        return null;
 }
 }

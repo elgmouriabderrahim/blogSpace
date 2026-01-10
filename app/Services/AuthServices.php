@@ -4,47 +4,41 @@ use App\Helpers\Helpers;
 use App\Models\Reader;
 use App\Repository\AuthRepository;
 class AuthServices {
-    static function register($firstName, $lastName, $userName, $email, $password, $cpassword){
-        $errors = [];
+    static function register(array $inputdata){
 
-        $errors = array_merge($errors, Helpers::validateFirstName($firstName));
-        $errors = array_merge($errors, Helpers::validateLastName($lastName));
-        $errors = array_merge($errors, Helpers::validateUsername($userName));
-        $errors = array_merge($errors, Helpers::validateEmail($email));
-        $errors = array_merge($errors, Helpers::validatePassword($password));
-        $errors = array_merge($errors, Helpers::validateCPassword($password ,$cpassword));
-
+        $errors = Helpers::validateRegisterInputs($inputdata);
         
-        if(AuthRepository::emailExists($email))
+        if(AuthRepository::emailExists($inputdata['email']))
             $errors = array_merge($errors, ['email' => "email already exists"]);
         
-        if(AuthRepository::userNameExists($userName))
+        if(AuthRepository::userNameExists($inputdata['userName']))
             $errors = array_merge($errors, ['userName' => "Username already exists"]);
 
         if(!empty($errors))
             return $errors;
         else{
-            $reader = new Reader($firstName, $lastName, $userName, $email, password_hash($password, PASSWORD_DEFAULT));
+            $inputdata['password'] = password_hash($inputdata['password'], PASSWORD_DEFAULT);
+            unset($inputdata['cpassword']);
+            $reader = new Reader([...$inputdata, 'created_at' => date('Y-m-d H:i:s'), 'is_banned' => 0]);
             AuthRepository::register($reader);
             return [];
         }
     }
-    static function login($email, $password){
-        $errors = [];
+    static function login($inputdata){
 
-        $errors = array_merge($errors, Helpers::validateEmail($email));
-        if(empty($password))
-            $errors = array_merge($errors, ['password' => 'Password is required']);
+        $errors = Helpers::validateLoginInputs($inputdata);
 
         if(!empty($errors))
             return $errors;
 
-        $user = AuthRepository::getUserByEmail($email);
-        if (!$user || !password_verify($password, $user->getPassword())) {
+        $user = AuthRepository::getUserByEmail($inputdata['email']);
+        if (!$user || !password_verify($inputdata['password'], $user->getPassword())) {
             return ['login' => 'Invalid email or password'];
         }
         
         $_SESSION['user_id'] = $user->getId();
+        $_SESSION['user_firstName'] = $user->getFirstName();
+        $_SESSION['user_lastName'] = $user->getLastName();
         $_SESSION['user_name'] = $user->getUserName();
         $_SESSION['user_role'] = $user->getRole();
 
