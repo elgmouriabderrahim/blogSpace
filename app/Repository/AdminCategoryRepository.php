@@ -1,17 +1,19 @@
 <?php
 namespace App\Repository;
-
 use App\Core\Database;
 use PDO;
 
+use App\Models\Category;
+
 class AdminCategoryRepository
 {
-    public static function findAll(): array
+    public static function getAllCategories(): array
     {
-        return Database::getInstance()
+        $categories = Database::getInstance()
             ->getConnection()
             ->query("SELECT * FROM categories ORDER BY name")
             ->fetchAll(PDO::FETCH_ASSOC);
+        return array_map(function ($category) {return new Category($category);},$categories);
     }
 
     public static function isCategoryExists(string $name): bool

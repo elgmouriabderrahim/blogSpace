@@ -19,7 +19,6 @@ class AdminUserController extends Controller
             AdminUserService::banUser($id);
             header('Location: /admin/users');
             exit;
-            
         }
     }
     public function unbanUser(){

@@ -21,17 +21,23 @@ $router->post('/admin/categories/delete', "AdminCategoryController@delete");
 
 
 $router->get('/author/dashboard', "AuthorDashboardController@index");
+$router->post('/author/dashboard', "AuthorDashboardController@index");
 
-$router->get('/author/articles/edit', "AuthorArticlesController@edit");
+
+$router->post('/author/articles/view', "AuthorArticlesController@viewArticle");
+
 $router->get('/author/articles/create', "AuthorArticlesController@create");
+$router->post('/author/articles/create', "AuthorArticlesController@create");
+$router->get('/author/articles/edit', "AuthorArticlesController@edit");
+$router->post('/author/articles/edit', "AuthorArticlesController@editform");
 $router->post('/author/articles/delete', "AuthorArticlesController@delete");
 
 
-$router->post('/register', "AuthController@register");
+$router->post('/register', "AuthController@registerform");
 $router->get('/register', "AuthController@register");
 
 $router->get('/login', "AuthController@login");
-$router->post('/login', "AuthController@login");
+$router->post('/login', "AuthController@loginform");
 
 $router->get('/logout', "AuthController@logout");
 $router->dispatch();

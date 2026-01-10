@@ -7,7 +7,7 @@
         <label for="firstName">First Name</label>
         <div class="relative">
           <i class="fa-solid fa-address-card absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-          <input type="text" placeholder="First Name" name ="firstName" value="<?= htmlspecialchars($old['firstName'] ?? '') ?>" class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input type="text" placeholder="First Name" name ="firstName" value="<?= htmlspecialchars($inputData['firstName'] ?? '') ?>" class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
         <span class="text-red-500 block mt-1 text-sm"><?= htmlspecialchars($errors['firstName'] ?? '') ?></span>
       </div>
@@ -15,7 +15,7 @@
         <label for="lastName">Last Name</label>
         <div class="relative">
           <i class="fa-solid fa-address-card absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-          <input type="text" placeholder="Last Name" name="lastName" value="<?= htmlspecialchars($old['lastName'] ?? '') ?>" class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input type="text" placeholder="Last Name" name="lastName" value="<?= htmlspecialchars($inputData['lastName'] ?? '') ?>" class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
         <span class="text-red-500 block mt-1 text-sm"><?= htmlspecialchars($errors['lastName'] ?? '') ?></span>
       </div>
@@ -23,7 +23,7 @@
         <label for="userName">Username</label>
         <div class="relative">
           <i class="fa-solid fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-          <input type="text" placeholder="Username" name="userName" value="<?= htmlspecialchars($old['userName'] ?? '') ?>" class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input type="text" placeholder="Username" name="userName" value="<?= htmlspecialchars($inputData['userName'] ?? '') ?>" class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
 
         </div>
         <span class="text-red-500 block mt-1 text-sm"><?= htmlspecialchars($errors['userName'] ?? '') ?></span>
@@ -33,7 +33,7 @@
         <label for="email">Email</label>
         <div class="relative">
           <i class="fa-solid fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-          <input type="email" placeholder="Email Address" name="email" value="<?= htmlspecialchars($old['email'] ?? '') ?>" class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input type="email" placeholder="Email Address" name="email" value="<?= htmlspecialchars($inputData['email'] ?? '') ?>" class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
         <span class="text-red-500 block mt-1 text-sm"><?= htmlspecialchars($errors['email'] ?? '') ?></span>
       </div>
@@ -42,7 +42,7 @@
         <label for="password">Password</label>
         <div class="relative">
           <i class="fa-solid fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-          <input type="password" name="password" placeholder="Enter a password" class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input type="password" name="password" value="<?= htmlspecialchars($inputData['password'] ?? '') ?>" placeholder="Enter a password" class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
 
         </div>
         <span class="text-red-500 block mt-1 text-sm"><?= htmlspecialchars($errors['password'] ?? '') ?></span>
@@ -52,7 +52,7 @@
         <label for="cpassword">Confirm your password</label>
         <div class="relative">
           <i class="fa-solid fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-          <input type="password" placeholder="confirm your password" name="cpassword" class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input type="password" value="<?= htmlspecialchars($inputData['cpassword'] ?? '') ?>" placeholder="confirm your password" name="cpassword" class="w-full pl-10 pr-3 py-3 rounded-lg bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
         <span class="text-red-500 block mt-1 text-sm"><?= htmlspecialchars($errors['cpassword'] ?? '') ?></span>
       </div>

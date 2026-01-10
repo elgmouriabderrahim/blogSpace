@@ -1,78 +1,72 @@
 <?php
 namespace App\Helpers;
+use App\Models\Reader;
+use App\Models\Admin;
+use App\Models\Author;
 class Helpers {
     static function sanitize(string $data): string {
         return trim($data);
     }
 
-    static function validateFirstName($firstName){
-        $firstName = self::sanitize($firstName);
+    static function validateRegisterInputs(array $inputData){
 
-        if($firstName === '')
-            return ['firstName' => 'First name is required'];
+        $firstName = self::sanitize($inputData['firstName']);
+        $lastName = self::sanitize($inputData['lastName']);
+        $userName = self::sanitize($inputData['userName']);
+        $email = self::sanitize($inputData['email']);
+
+        $errors = [];
 
         if(!preg_match('/^[\p{L} ]{3,50}$/u', $firstName))
-            return ['firstName' => 'Invalid name'];
-
-        return [];
-    }
-
-    static function validateLastName($lastName){
-        $lastName = self::sanitize($lastName);
-
-        if($lastName === '')
-            return ['lastName' => 'Last name is required'];
+            $errors['firstName'] = 'Invalid name';
+        if($firstName === '')
+            $errors['firstName'] = 'First name is required';
 
         if(!preg_match('/^[\p{L} ]{3,50}$/u', $lastName))
-            return ['lastName' => 'Invalid name'];
-
-        return [];
-    }
-
-    static function validateUserName($userName){
-        $userName = self::sanitize($userName);
-
-        if($userName === '')
-            return ['userName' => 'Username is required'];
+            $errors['lastName'] = 'Invalid name';
+        if($lastName === '')
+            $errors['lastName'] = 'Last name is required';
 
         if(!preg_match('/^[\p{L}\d._-]{3,50}$/u', $userName))
-            return ['userName' => 'Invalid username'];
-
-        return [];
-    }
-
-    static function validateEmail($email){
-        $email = self::sanitize($email);
-
-        if($email === '')
-            return ['email' => 'Email is required'];
+            $errors['userName'] = 'Invalid username';
+        if($userName === '')
+            $errors['userName'] = 'Username is required';
 
         if(!filter_var($email, FILTER_VALIDATE_EMAIL))
-            return ['email' => 'Invalid email'];
+            $errors['email'] = 'Invalid email';
+        if($email === '')
+            $errors['email'] = 'Email is required';
+
+        if(!preg_match('/^(?=.*[A-Za-z])(?=.*\d).{5,}$/', $inputData['password']))
+            $errors['password'] = 'Weak password';
+        if($inputData['password'] === '')
+            $errors['password'] = 'Password is required';
+
+        elseif($inputData['password'] !== $inputData['cpassword'])
+            $errors['cpassword'] = 'password dont match';
+        if($inputData['cpassword'] === '')
+            $errors['cpassword'] = 'Password confirmation is required';
+
+        return $errors;
+    }
+
+    public static function validateLoginInputs($inputData){
+        $email = self::sanitize($inputData['email']);
+
+        $errors =[];
+
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+            $errors['email'] = 'Invalid email';
+        if($email === '')
+            $errors['email'] = 'Email is required';
+
+        if($inputData['password'] === '')
+            $errors['password'] = 'Password is required';
         
-        return [];
+        return $errors;
     }
 
-    static function validatePassword($password){
-        if($password === '')
-            return ['password' => 'Password is required'];
-
-        if(!preg_match('/^(?=.*[A-Za-z])(?=.*\d).{5,}$/', $password))
-            return ['password' => 'Weak password'];
-
-        return [];
-    }
-
-    static function validateCPassword($password, $cpassword){
-        if($cpassword === '')
-            return ['cpassword' => 'Password confirmation is required'];
-        elseif($password !== $cpassword)
-            return ['cpassword' => 'password dont match'];
-
-        return [];
-    }
-
-    static function validatecategory($categoryname){
+    public static function validatecategory($categoryname){
         $categoryname = self::sanitize($categoryname);
 
         if($categoryname === '')
@@ -83,4 +77,34 @@ class Helpers {
         
         return null;
     }
+
+    static function validateArticle($title, $content, $status){
+        $title = self::sanitize($title);
+        $content = self::sanitize($content);
+        $status = self::sanitize($status);
+        $errors = [];
+        if($title === '')
+            $errors['title'] = 'Title is required';
+
+        if($content === '')
+            $errors['content'] = 'Content is required';
+
+        if($status !== 'Draft' && $status !== 'Published')
+            $errors['status'] = 'Invalid status';
+
+        if(!preg_match('/^[\p{L} \d]{3,50}$/u', $title))
+            $errors['title'] = 'Invalid Title';
+
+        if($content !== '' && !preg_match('/^.{20,}$/', $content))
+            $errors['content'] = 'Content must be at least 20 character';
+        
+        return $errors;
+    }
+
+    public static function createUser(array $data){
+        return $data['role'] === 'Reader' ? new Reader($data) :
+        ($data['role'] === 'Admin' ? new Admin($data) :
+        ($data['role'] === 'Author' ? new Author($data) : null));
+    }
+
 }

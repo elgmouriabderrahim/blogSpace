@@ -7,6 +7,5 @@ class Comment {
     private int $user_id;
     private int $article_id;
     private string $created_at;
-    private function user() {}
-    private function article() {}
+
 }
