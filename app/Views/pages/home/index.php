@@ -5,16 +5,29 @@
 <?php foreach ($articles as $article): ?>
   <article class="bg-gray-900 border border-gray-800 rounded-2xl p-6 hover:border-gray-700 transition">
 
-    <h2 class="text-2xl font-medium mb-2 leading-snug"><?= htmlspecialchars($article->getTitle()) ?></h2>
+    <h2 class="text-2xl font-medium mb-2 leading-snug">
+      <?= htmlspecialchars($article->getTitle()) ?>
+    </h2>
 
     <div class="flex items-center text-sm text-gray-400 mb-4 gap-4">
-      <span><i class="fa-regular fa-user mr-1"></i><?= htmlspecialchars($article->getAuthorName()) ?></span>
-      <span><i class="fa-regular fa-calendar mr-1"></i><?= htmlspecialchars($article->getCreatedAt()) ?></span>
+      <span>
+        <i class="fa-regular fa-user mr-1"></i>
+        <?= htmlspecialchars($article->getAuthorName()) ?>
+      </span>
+      <span>
+        <i class="fa-regular fa-calendar mr-1"></i>
+        <?= htmlspecialchars($article->getCreatedAt()) ?>
+      </span>
     </div>
 
     <div class="flex items-center justify-between border-t border-gray-800 pt-4">
 
-      <a href="/articles/<?= $article->getId() ?>" class="text-blue-400 hover:text-blue-300 font-medium">Read article</a>
+      <form method="post" action="/reader/articles/show">
+        <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
+        <button type="submit" class="text-blue-400 hover:text-blue-300 font-medium">
+          Read article
+        </button>
+      </form>
 
       <div class="flex items-center gap-6 text-gray-400">
 
@@ -28,8 +41,8 @@
           <?= $article->getCommentsCount() ?>
         </span>
 
-        <?php if ( $userRole === 'Reader'): ?>
-          <form method="post" action="/articles/like">
+        <?php if ($userRole === 'Reader'): ?>
+          <form method="post" action="/reader/articles/like">
             <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
             <button class="text-gray-400 hover:text-red-500 transition" title="Like article">
               <i class="fa-solid fa-heart"></i>
