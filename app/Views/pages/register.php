@@ -61,6 +61,6 @@
       <button class="w-full py-3 bg-blue-600 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer">Create Account</button>
     </form>
 
-    <p class="text-center text-gray-400 mt-6">Already have an account? <a href="/login" class="text-blue-500 font-semibold">Log In</a></p>
+    <p class="text-center text-gray-400 mt-6">Already have an account? <a href="/login" class="text-blue-500 font-semibold">Log In</a><br><a href="/" class="mr-4 underline hover:text-blue-400">Return to home</a></p>
     <img src="/assets/images/blog.png" alt="logo">
   </div>

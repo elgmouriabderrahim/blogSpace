@@ -41,7 +41,8 @@
     </form>
 
     <p class="text-center text-gray-400 mt-6">
-        Don't have an account? <a href="/register" class="text-blue-500 font-semibold">Register</a>
+        Don't have an account? <a href="/register" class="text-blue-500 font-semibold">Register</a><br>
+        <a href="/" class="mr-4 underline hover:text-blue-400">Return to home</a>
     </p>
 
     <img src="/assets/images/blog.png" alt="logo" class="mx-auto mt-4" />
