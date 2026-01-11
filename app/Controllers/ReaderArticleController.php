@@ -7,25 +7,31 @@ use App\Services\ReaderArticleService;
 class ReaderArticleController extends Controller {
 
     public function show() {
-        $articleId = $_POST['article_id'] ?? null;
+        $articleId = $_SESSION['article_id'] ?? $_POST['article_id'] ?? null;
+        $errors = $_SESSION['errors'] ?? [];
+        $old = $_SESSION['old'] ?? [];
+        
+        unset($_SESSION['errors']);
+        unset($_SESSION['article_id']);
+        unset($_SESSION['old']);
+
+
         if (!$articleId) {
-            header("HTTP/1.0 400 Bad Request");
-            echo "Article ID is required.";
+            http_response_code(404);
+            $this->view('404', ['title' => 'Article ID is required']);
             exit;
         }
 
         $article = ReaderArticleService::getArticle($articleId);
         if (!$article) {
-            header("HTTP/1.0 404 Not Found");
-            echo "Article not found.";
+            http_response_code(404);
+            $this->view('404', ['title' => 'Article not found']);
             exit;
         }
 
         $comments = ReaderArticleService::getComments($articleId);
-        $errors = [];
-        $old = [];
 
-        $this->view('reader/articles/show', compact('article','comments','errors','old'));
+        $this->view('articles/show', compact('article','comments', 'errors', 'old'));
     }
 
     public function comment() {
@@ -33,13 +39,13 @@ class ReaderArticleController extends Controller {
         $articleId = $_POST['article_id'];
         $content = $_POST['content'] ?? '';
 
-        $errors = ReaderArticleService::addComment($articleId, $readerId, $content);
-        $old = ['content' => $content];
+        $_SESSION['errors'] = ReaderArticleService::addComment($articleId, $readerId, $content);
+        if($_SESSION['errors'])
+            $_SESSION['old'] = ['content' => $content];
 
-        $article = ReaderArticleService::getArticle($articleId);
-        $comments = ReaderArticleService::getComments($articleId);
-
-        $this->view('reader/articles/show', compact('article','comments','errors','old'));
+        $_SESSION['article_id'] = $articleId;
+        header('location: /articles/show');
+        exit;
     }
 
     public function deleteComment() {
@@ -47,39 +53,50 @@ class ReaderArticleController extends Controller {
         $commentId = $_POST['comment_id'];
         ReaderArticleService::deleteComment($commentId, $readerId);
 
-        header("Location: " . $_SERVER['HTTP_REFERER']);
+        $_SESSION['article_id'] = $_POST['article_id'];
+        header("Location: /articles/show");
         exit;
     }
 
     public function likeArticle() {
         $readerId = $_SESSION['user_id'];
         $articleId = $_POST['article_id'];
-        ReaderArticleService::likeArticle($articleId, $readerId);
-        header("Location: " . $_SERVER['HTTP_REFERER']);
-        exit;
+        $likedByReader = $_POST['liked_by_reader'];
+
+        if($likedByReader){
+            ReaderArticleService::unlikeArticle($articleId, $readerId);
+            $_SESSION['article_id'] = $articleId;
+            header("Location: " . $_POST['previous']);
+            exit;
+        }else{
+            ReaderArticleService::likeArticle($articleId, $readerId);
+    
+            $_SESSION['article_id'] = $articleId;
+            header("Location: " . $_POST['previous']);
+            exit;
+        }
+        
     }
 
-    public function unlikeArticle() {
-        $readerId = $_SESSION['user_id'];
-        $articleId = $_POST['article_id'];
-        ReaderArticleService::unlikeArticle($articleId, $readerId);
-        header("Location: " . $_SERVER['HTTP_REFERER']);
-        exit;
-    }
 
     public function likeComment() {
         $readerId = $_SESSION['user_id'];
         $commentId = $_POST['comment_id'];
-        ReaderArticleService::likeComment($commentId, $readerId);
-        header("Location: " . $_SERVER['HTTP_REFERER']);
-        exit;
+        $likedByReader = $_POST['liked_by_reader'];
+
+        if($likedByReader){
+            ReaderArticleService::unlikeComment($commentId, $readerId);
+
+            $_SESSION['article_id'] = $_POST['article_id'];
+            header("Location: /articles/show");
+            exit;
+        }else{
+            ReaderArticleService::likeComment($commentId, $readerId);
+    
+            $_SESSION['article_id'] = $_POST['article_id'];
+            header("Location: /articles/show");
+            exit;
+        }
     }
 
-    public function unlikeComment() {
-        $readerId = $_SESSION['user_id'];
-        $commentId = $_POST['comment_id'];
-        ReaderArticleService::unlikeComment($commentId, $readerId);
-        header("Location: " . $_SERVER['HTTP_REFERER']);
-        exit;
-    }
 }
