@@ -3,10 +3,12 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Services\AuthServices;
+use App\Middlewears\Auth;
 
 class AuthController extends Controller
 {
     public function register(){
+        Auth::onlyGuest();
         $this->view('Register', ['title'  => 'Blog space - Register']);
     }
     public function registerform(){
@@ -34,6 +36,7 @@ class AuthController extends Controller
     }
 
     public function login(){
+        Auth::onlyGuest();
         $this->view('login', ['title' => 'Blogspace - Log In']);
     }
     public function loginform(){
@@ -57,6 +60,7 @@ class AuthController extends Controller
     }
 
     public function logout(){
+        Auth::onlyUser();
         session_unset();
         session_destroy();
         header('Location: /login');

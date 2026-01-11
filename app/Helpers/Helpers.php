@@ -78,7 +78,7 @@ class Helpers {
         return null;
     }
 
-    static function validateArticle($title, $content, $status){
+    static function validateArticle($title, $content, $status, $categories){
         $title = self::sanitize($title);
         $content = self::sanitize($content);
         $status = self::sanitize($status);
@@ -97,6 +97,9 @@ class Helpers {
 
         if($content !== '' && !preg_match('/^.{20,}$/', $content))
             $errors['content'] = 'Content must be at least 20 character';
+
+        if(empty($categories))
+            $errors['categories'] = "Select one category at least";
         
         return $errors;
     }

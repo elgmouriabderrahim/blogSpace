@@ -6,7 +6,7 @@
 
     <div class="flex items-center gap-4 text-sm text-gray-300">
         <i class="fa-solid fa-user-shield"></i>
-        <?= htmlspecialchars($_SESSION['user_name'] ?? 'Guest') ?>
+        <?= htmlspecialchars($_SESSION['user_firstName'] . ' ' . $_SESSION['user_lastName'] ?? 'Guest') ?>
     </div>
 
 </header>

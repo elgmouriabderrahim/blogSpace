@@ -26,7 +26,7 @@ $router->post('/author/articles/view', "AuthorArticlesController@viewArticle");
 
 $router->get('/author/articles/create', "AuthorArticlesController@create");
 $router->post('/author/articles/create', "AuthorArticlesController@create");
-$router->get('/author/articles/edit', "AuthorArticlesController@edit");
+$router->get('/author/articles/edit', "AuthorArticlesController@editform");
 $router->post('/author/articles/edit', "AuthorArticlesController@editform");
 $router->post('/author/articles/delete', "AuthorArticlesController@delete");
 
