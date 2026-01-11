@@ -7,7 +7,7 @@ use App\Helpers\Helpers;
 
 class AuthorArticleService {
 
-    public static function create(int $authorId, string $title, string $content, string $status): void {
+    public static function create(int $authorId, string $title, string $content, string $status, array $categories): void {
         $article = new Article([
             'author_id' => $authorId,
             'title' => $title,
@@ -17,9 +17,8 @@ class AuthorArticleService {
             'author_name' => $_SESSION['firstName'] . ' ' . $_SESSION['lastName'],
             'likes_count' => 0,
             'comments_count' => 0
-
         ]);
-        AuthorArticleRepository::create($article);
+        AuthorArticleRepository::create($article ,$categories);
     }
 
     public static function getMyArticles(int $authorId): array {
@@ -30,19 +29,25 @@ class AuthorArticleService {
         return AuthorArticleRepository::findByIdAndAuthor($id, $authorId);
     }
 
-    public static function update(Article $article, string $title, string $content, string $status): void {
+    public static function update(Article $article, string $title, string $content, string $status,array $selectedCategories): void {
         $article->setTitle($title);
         $article->setContent($content);
         $article->setStatus($status);
         $article->setUpdatedAt(date('Y-m-d H:i:s'));
-        AuthorArticleRepository::update($article);
+        AuthorArticleRepository::update($article, $selectedCategories);
     }
 
     public static function delete(int $id, int $authorId): void {
         AuthorArticleRepository::delete($id, $authorId);
     }
 
-    public static function validateArticle(string $title, string $content, string $status): array {
-        return Helpers::validateArticle($title, $content, $status);
+    public static function validateArticle(string $title, string $content, string $status,array $categories): array {
+        return Helpers::validateArticle($title, $content, $status, $categories);
     }
+
+    public static function getArticleCategoryIds(int $articleId): array
+    {
+        return AuthorArticleRepository::getArticleCategoryIds($articleId);
+    }
+
 }

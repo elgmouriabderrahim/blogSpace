@@ -36,6 +36,29 @@
   </div>
 
   <div>
+    <label class="block mb-2 text-gray-400">Categories</label>
+    <div class="grid grid-cols-2 gap-3">
+      <?php foreach ($categories as $category): ?>
+        <label class="flex items-center gap-2 text-gray-300">
+          <input
+          type="checkbox"
+          name="categories[]"
+          value="<?= $category->getId() ?>" 
+          class="accent-blue-600"<?= in_array($category->getId(), $old['categories'] ?? []) ? 'checked' : '' ?>
+          >
+          <?= htmlspecialchars($category->getName()) ?>
+        </label>
+      <?php endforeach; ?>
+    </div>
+    <?php if (isset($errors['categories'])): ?>
+      <div class="text-red-500 mt-2">
+        <?= htmlspecialchars($errors['categories']) ?>
+      </div>
+    <?php endif; ?>
+  </div>
+
+
+  <div>
     <label class="block mb-2 text-gray-400">Status</label>
     <select name="status" class="w-full bg-gray-900 border border-gray-600 px-4 py-2 rounded">
       <option value="Draft"  <?= ($old['status'] ?? 'Draft') === 'Draft' ? 'selected' : '' ?>>Draft</option>

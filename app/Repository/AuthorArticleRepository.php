@@ -7,21 +7,37 @@ use PDO;
 
 class AuthorArticleRepository {
 
-    public static function create(Article $article): void {
-        $stmt = Database::getInstance()
-            ->getConnection()
-            ->prepare(
-                "INSERT INTO articles (author_id, title, content, status) 
-                 VALUES (:author_id, :title, :content, :status)"
-            );
+    public static function create(Article $article, array $categories): void
+{
+    $pdo = Database::getInstance()->getConnection();
 
+    $stmt = $pdo->prepare(
+        "INSERT INTO articles (author_id, title, content, status) 
+         VALUES (:author_id, :title, :content, :status)"
+    );
+
+    $stmt->execute([
+        'author_id' => $article->getAuthorId(),
+        'title' => $article->getTitle(),
+        'content' => $article->getContent(),
+        'status' => $article->getStatus()
+    ]);
+
+    $articleId = (int) $pdo->lastInsertId();
+
+    $stmt = $pdo->prepare(
+        "INSERT INTO article_category (article_id, category_id)
+         VALUES (:article_id, :category_id)"
+    );
+
+    foreach ($categories as $categoryId) {
         $stmt->execute([
-            'author_id' => $article->getAuthorId(),
-            'title' => $article->getTitle(),
-            'content' => $article->getContent(),
-            'status' => $article->getStatus()
+            'article_id' => $articleId,
+            'category_id' => (int) $categoryId
         ]);
     }
+}
+
 
     public static function getByAuthor(int $authorId): array {
         $stmt = Database::getInstance()
@@ -49,22 +65,53 @@ class AuthorArticleRepository {
             return null;
     }
 
-    public static function update(Article $article): void {
-        $stmt = Database::getInstance()
-            ->getConnection()
-            ->prepare(
-                "UPDATE articles SET title = :title, content = :content, status = :status, updated_at = NOW()
-                 WHERE id = :id AND author_id = :author_id"
-            );
-
+    public static function update(Article $article, array $selectedCategories): void {
+        $db = Database::getInstance()->getConnection();
+        $stmt = $db->prepare(
+            "UPDATE articles 
+            SET title = :title, content = :content, status = :status, updated_at = NOW()
+            WHERE id = :id AND author_id = :author_id"
+        );
         $stmt->execute([
-            'id' =>  $article->getId(),
+            'id' => $article->getId(),
             'author_id' => $article->getAuthorId(),
             'title' => $article->getTitle(),
             'content' => $article->getContent(),
             'status' => $article->getStatus()
         ]);
+
+        $stmt = $db->prepare("DELETE FROM article_category WHERE article_id = :article_id");
+        $stmt->execute(['article_id' => $article->getId()]);
+
+        $stmt = $db->prepare(
+            "INSERT INTO article_category (article_id, category_id) VALUES (:article_id, :category_id)"
+        );
+        foreach ($selectedCategories as $categoryId) {
+            $stmt->execute([
+                'article_id' => $article->getId(),
+                'category_id' => (int)$categoryId
+            ]);
+        }
     }
+
+
+    public static function getArticleCategoryIds(int $articleId): array
+    {
+        $db = Database::getInstance()->getConnection();
+
+        $stmt = $db->prepare(
+            "SELECT category_id
+            FROM article_category
+            WHERE article_id = :article_id"
+        );
+
+        $stmt->execute([
+            'article_id' => $articleId
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
 
     public static function delete(int $id, int $authorId): void {
         $stmt = Database::getInstance()
