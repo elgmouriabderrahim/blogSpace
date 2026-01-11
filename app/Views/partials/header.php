@@ -4,9 +4,11 @@
         <?= isset($title) ? htmlspecialchars($title) : 'Home' ?>
     </div>
 
+
+
     <div class="flex items-center gap-4 text-sm text-gray-300">
         <i class="fa-solid fa-user-shield"></i>
-        <?= htmlspecialchars($_SESSION['user_firstName'] . ' ' . $_SESSION['user_lastName'] ?? 'Guest') ?>
+        <?= isset($_SESSION['user_id']) ? htmlspecialchars(($_SESSION['user_firstName'] . ' ' . $_SESSION['user_lastName'])) : 'Guest' ?>
     </div>
 
 </header>
