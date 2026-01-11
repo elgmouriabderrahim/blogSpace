@@ -10,15 +10,22 @@
   <div class="prose prose-invert mb-6"><?= nl2br(htmlspecialchars($article->getContent())) ?></div>
 
   <div class="flex items-center gap-6 mb-6">
-    <form method="post" action="/reader/articles/like" class="flex items-center gap-2">
-      <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
-      <input type="hidden" name="liked_by_reader" value="<?= $article->isLikedByReader() ?>">
-      <input type="hidden" name="previous" value="/articles/show">
-      <button type="submit" class="<?= $article->isLikedByReader() ? 'text-red-500' : 'text-gray-400 hover:text-red-500' ?> transition flex items-center gap-2">
-        <i class="fa-solid fa-heart"></i>
-      </button>
-      <?= $article->getLikesCount() ?>
-    </form>
+    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Reader'): ?>
+      <form method="post" action="/reader/articles/like" class="flex items-center gap-2">
+        <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
+        <input type="hidden" name="liked_by_reader" value="<?= $article->isLikedByReader() ?>">
+        <input type="hidden" name="previous" value="/articles/show">
+        <button type="submit" class="<?= $article->isLikedByReader() ? 'text-red-500' : 'text-gray-400 hover:text-red-500' ?> transition flex items-center gap-2">
+          <i class="fa-solid fa-heart"></i>
+        </button>
+        <span><?= $article->getLikesCount() ?></span>
+      </form>
+    <?php else: ?>
+      <div class="flex items-center gap-2">
+        <i class="fa-regular fa-heart"></i>
+        <?= $article->getLikesCount() ?>
+      </div>
+    <?php endif; ?>
 
     <span class="flex items-center gap-2 text-gray-400">
       <i class="fa-regular fa-comment"></i> <?= $article->getCommentsCount() ?>
@@ -38,17 +45,24 @@
           <p class="text-gray-200"><?= nl2br(htmlspecialchars($comment->getContent())) ?></p>
 
           <div class="flex items-center gap-2 mt-2">
-            <form method="post" action="/reader/comments/like">
-              <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
-              <input type="hidden" name="comment_id" value="<?= $comment->getId() ?>">
-              <input type="hidden" name="liked_by_reader" value="<?= $comment->isLikedByReader() ?>">
-              <button class="<?= $comment->isLikedByReader() ? 'text-red-500' : 'text-gray-400 hover:text-red-500' ?>">
-                <i class="fa-solid fa-heart"></i>
-              </button>
-              <?= $comment->getLikesCount() ?>
-            </form>
+            <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'Reader'): ?>
+              <form method="post" action="/reader/comments/like">
+                <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
+                <input type="hidden" name="comment_id" value="<?= $comment->getId() ?>">
+                <input type="hidden" name="liked_by_reader" value="<?= $comment->isLikedByReader() ?>">
+                <button class="<?= $comment->isLikedByReader() ? 'text-red-500' : 'text-gray-400 hover:text-red-500' ?>">
+                  <i class="fa-solid fa-heart"></i>
+                </button>
+                <?= $comment->getLikesCount() ?>
+              </form>
+            <?php else: ?>
+              <div class="flex items-center gap-2">
+                <i class="fa-regular fa-heart"></i>
+                <?= $comment->getLikesCount() ?>
+              </div>
+            <?php endif; ?>
 
-            <?php if ($_SESSION['user_id'] === $comment->getReaderId()): ?>
+            <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] === $comment->getReaderId()): ?>
               <form method="post" action="/reader/comments/delete">
                 <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
                 <input type="hidden" name="comment_id" value="<?= $comment->getId() ?>">
@@ -61,14 +75,15 @@
     <?php else: ?>
       <p class="text-gray-400 mb-4">No comments yet.</p>
     <?php endif; ?>
-
-    <form method="post" action="/reader/articles/comment" class="space-y-4 mt-4">
-      <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
-      <textarea name="content" rows="4" class="w-full bg-gray-900 border border-gray-600 px-4 py-2 rounded" placeholder="Add a comment..."><?= $old['content'] ?? '' ?></textarea>
-      <?php if(isset($errors['content'])): ?>
-        <p class="text-red-500 w-full transform -translate-y-1/2"><?= htmlspecialchars($errors['content']) ?></p>
-      <?php endif; ?>
-      <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded">Post Comment</button>
-    </form>
+    <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'Reader'): ?>
+      <form method="post" action="/reader/articles/comment" class="space-y-4 mt-4">
+        <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
+        <textarea name="content" rows="4" class="w-full bg-gray-900 border border-gray-600 px-4 py-2 rounded" placeholder="Add a comment..."><?= $old['content'] ?? '' ?></textarea>
+        <?php if(isset($errors['content'])): ?>
+          <p class="text-red-500 w-full transform -translate-y-1/2"><?= htmlspecialchars($errors['content']) ?></p>
+        <?php endif; ?>
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded">Post Comment</button>
+      </form>
+    <?php endif; ?>
   </div>
 </div>

@@ -6,7 +6,7 @@ use App\Core\Controller;
 use App\Services\AuthorDashboardService;
 
 use App\Middlewears\Auth;
-Auth::isAuthor();
+Auth::onlyAuthor();
 
 class AuthorDashboardController extends Controller
 {
