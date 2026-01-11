@@ -75,7 +75,7 @@
     <?php else: ?>
       <p class="text-gray-400 mb-4">No comments yet.</p>
     <?php endif; ?>
-    <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'Reader'): ?>
+    <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'Reader' && $_SESSION['is_banned'] !== '1'): ?>
       <form method="post" action="/reader/articles/comment" class="space-y-4 mt-4">
         <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
         <textarea name="content" rows="4" class="w-full bg-gray-900 border border-gray-600 px-4 py-2 rounded" placeholder="Add a comment..."><?= $old['content'] ?? '' ?></textarea>

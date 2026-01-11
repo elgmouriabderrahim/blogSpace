@@ -41,6 +41,7 @@ class AuthServices {
         $_SESSION['user_lastName'] = $user->getLastName();
         $_SESSION['user_name'] = $user->getUserName();
         $_SESSION['user_role'] = $user->getRole();
+        $_SESSION['is_banned'] = $user->isBanned();
 
         return [];
     }
