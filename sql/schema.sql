@@ -74,7 +74,7 @@ CREATE TABLE comments (
 
 CREATE TABLE likes (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    reader_id INT NOT NULL,     
+    reader_id INT NOT NULL,
     article_id INT DEFAULT NULL,
     comment_id INT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

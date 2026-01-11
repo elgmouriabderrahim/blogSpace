@@ -9,6 +9,7 @@ class Comment {
     private string $created_at;
     private string $reader_name;
     private int $likes_count;
+    private bool $likedByReader;
 
     public function __construct(array $data){
         $this->id = $data['id'];
@@ -18,6 +19,7 @@ class Comment {
         $this->created_at = $data['created_at'];
         $this->reader_name = $data['reader_name'];
         $this->likes_count = $data['likes_count'];
+        $this->likedByReader = $data['liked_by_reader'] ?? false;
     }
 
     public function getId(): int { return $this->id; }
@@ -26,4 +28,5 @@ class Comment {
     public function getReaderId(): int { return $this->user_id; }
     public function getReaderName(): string { return $this->reader_name; }
     public function getLikesCount(): int { return $this->likes_count; }
+    public function isLikedByReader(): bool { return $this->likedByReader; }
 }

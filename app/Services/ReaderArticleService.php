@@ -11,7 +11,7 @@ class ReaderArticleService {
     }
 
     public static function getComments(int $articleId): array {
-        return ReaderArticleRepository::getCommentsByArticle($articleId);
+        return ReaderArticleRepository::getCommentsByArticleId($articleId);
     }
 
     public static function addComment(int $articleId, int $readerId, string $content): array {

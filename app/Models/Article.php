@@ -12,6 +12,7 @@ class Article {
     private string $createdAt;
     private ?string $updatedAt;
     public string $status;
+    public bool $likedByReader;
 
     public function __construct(array $data){
         $this->id = $data['id'] ?? null;
@@ -24,6 +25,7 @@ class Article {
         $this->authorName = $data['author_name'];
         $this->likesCount = $data['likes_count'] ?? null;
         $this->commentsCount = $data['comments_count'] ?? null;
+        $this->likedByReader = $data['liked_by_reader'] ?? false;
     }
 
     public function getId(): int { return $this->id; }
@@ -36,8 +38,9 @@ class Article {
     public function getUpdatedAt(): ?string { return $this->updatedAt; }
     public function getLikesCount(): int { return $this->likesCount; }
     public function getCommentsCount(): int { return $this->commentsCount; }
+    public function isLikedByReader(): bool { return $this->likedByReader; }
     
-
+    
     public function setTitle(string $title): void { $this->title = $title; }
     public function setContent(string $content): void { $this->content = $content; }
     public function setStatus(string $status): void { $this->status = $status; }

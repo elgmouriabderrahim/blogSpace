@@ -9,33 +9,45 @@ use PDO;
 class ReaderArticleRepository {
 
     public static function findArticleById(int $id): ?Article {
-        $db = Database::getInstance()->getConnection();
+        $pdo = Database::getInstance()->getConnection();
+        $readerId = $_SESSION['user_id'] ?? 0;
 
-        $stmt = $db->prepare("
-            SELECT a.*, CONCAT(u.firstName, ' ', u.lastName) AS author_name,
+        $stmt = $pdo->prepare(
+            "SELECT a.*,
+                CONCAT(u.firstName, ' ', u.lastName) AS author_name,
                 (SELECT COUNT(*) FROM likes l WHERE l.article_id = a.id) AS likes_count,
-                (SELECT COUNT(*) FROM comments c WHERE c.article_id = a.id) AS comments_count
+                (SELECT COUNT(*) FROM comments c WHERE c.article_id = a.id) AS comments_count,
+                CASE WHEN EXISTS (
+                    SELECT 1 FROM likes l2 
+                    WHERE l2.article_id = a.id AND l2.reader_id = :reader_id
+                ) THEN 1 ELSE 0 END AS liked_by_reader
             FROM articles a
             JOIN users u ON a.author_id = u.id
             WHERE a.id = :id AND a.status = 'published'
             LIMIT 1
         ");
-        $stmt->execute(['id' => $id]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? new Article($row) : null;
+        $stmt->execute(['id' => $id, 'reader_id' => $readerId]);
+        $article = $stmt->fetch(PDO::FETCH_ASSOC);
+        $article['liked_by_reader'] = (bool)($article['liked_by_reader'] ?? 0);
+        return $article ? new Article($article) : null;
     }
 
-    public static function getCommentsByArticle(int $articleId): array {
+    public static function getCommentsByArticleId(int $articleId): array {
         $db = Database::getInstance()->getConnection();
-        $stmt = $db->prepare("
-            SELECT c.*, CONCAT(u.firstName,' ',u.lastName) AS reader_name,
-                (SELECT COUNT(*) FROM likes l WHERE l.comment_id = c.id) AS likes_count
+        $readerId = $_SESSION['user_id'] ?? '';
+        $stmt = $db->prepare(
+            "SELECT c.*, CONCAT(u.firstName,' ',u.lastName) AS reader_name,
+                (SELECT COUNT(*) FROM likes l WHERE l.comment_id = c.id) AS likes_count,
+                CASE WHEN EXISTS (
+                    SELECT 1 FROM likes l2
+                    WHERE l2.comment_id = c.id AND l2.reader_id = :reader_id
+                ) THEN 1 ELSE 0 END AS liked_by_reader
             FROM comments c
             JOIN users u ON c.reader_id = u.id
             WHERE c.article_id = :article_id
             ORDER BY c.created_at DESC
         ");
-        $stmt->execute(['article_id' => $articleId]);
+        $stmt->execute(['article_id' => $articleId, 'reader_id' => $readerId]);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return array_map(fn($row) => new Comment($row), $rows);
     }

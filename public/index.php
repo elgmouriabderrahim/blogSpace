@@ -5,8 +5,6 @@ session_start();
 
 $router = new Router();
 $router->get('/', "HomeController@index");
-$router->get('/home/index', "HomeController@index");
-$router->get('/home/show', "HomeController@index");
 
 $router->get('/admin/dashboard', "AdminDashboardController@index");
 
@@ -34,12 +32,14 @@ $router->post('/author/articles/delete', "AuthorArticlesController@delete");
 
 
 $router->post('/articles/show', 'ReaderArticleController@show');
+$router->get('/articles/show', 'ReaderArticleController@show');
 
-$router->post('/reader/articles/like', 'ReaderLikeController@toggleArticleLike');
-$router->post('/reader/articles/comment', 'ReaderCommentController@store');
+$router->post('/reader/articles/comment', 'ReaderArticleController@comment');
+$router->post('/reader/comments/delete', 'ReaderArticleController@deleteComment');
 
-$router->post('/reader/comments/like', 'ReaderLikeController@toggleCommentLike');
-$router->post('/reader/comments/delete', 'ReaderCommentController@delete');
+$router->post('/reader/articles/like', 'ReaderArticleController@likeArticle');
+
+$router->post('/reader/comments/like', 'ReaderArticleController@likeComment');
 
 
 

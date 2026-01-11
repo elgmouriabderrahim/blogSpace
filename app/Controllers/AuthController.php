@@ -4,9 +4,6 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Services\AuthServices;
 
-use App\Middlewears\Auth;
-Auth::onlyGuest();
-
 class AuthController extends Controller
 {
     public function register(){
@@ -60,9 +57,8 @@ class AuthController extends Controller
     }
 
     public function logout(){
-        $_SESSION = [];
+        session_unset();
         session_destroy();
-
         header('Location: /login');
         exit;
     }
