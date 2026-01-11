@@ -3,7 +3,7 @@ use App\Core\Controller;
 use App\Services\AuthorArticleService;
 
 use App\Middlewears\Auth;
-Auth::isAuthor();
+Auth::onlyAuthor();
 
 class AuthorArticlesController extends Controller
 {

@@ -49,6 +49,11 @@
               <?= $article->getLikesCount() ?>
             </div>
           </form>
+        <?php else: ?>
+          <div class=" flex items-center gap-2">
+              <i class="fa-solid fa-heart text-gray-400"></i>
+            <?= $article->getLikesCount() ?>
+          </div>
         <?php endif; ?>
 
       </div>
