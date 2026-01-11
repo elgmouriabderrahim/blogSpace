@@ -66,12 +66,12 @@
 
         <?php endif ?>
 
-        <?php if(isset($_SESSION['user_role'])):?>
+        <?php if(isset($_SESSION['user_id'])):?>
         <div class="p-4 border-t border-gray-700">
             <a href="/logout"
                class="flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition">
                 <i class="fa-solid fa-right-from-bracket"></i>
-                Logout
+                Log out
             </a>
         </div>
         <?php endif ?>

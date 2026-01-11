@@ -6,5 +6,4 @@ class Like {
     private int $user_id;
     private int $article_id;
     private int $comment_id;
-
 }

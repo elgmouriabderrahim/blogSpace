@@ -12,9 +12,12 @@
   <div class="flex items-center gap-6 mb-6">
     <form method="post" action="/reader/articles/like" class="flex items-center gap-2">
       <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
-      <button type="submit" class="text-gray-400 hover:text-red-500 transition flex items-center gap-2">
-        <i class="fa-solid fa-heart"></i> <?= $article->getLikesCount() ?>
+      <input type="hidden" name="liked_by_reader" value="<?= $article->isLikedByReader() ?>">
+      <input type="hidden" name="previous" value="/articles/show">
+      <button type="submit" class="<?= $article->isLikedByReader() ? 'text-red-500' : 'text-gray-400 hover:text-red-500' ?> transition flex items-center gap-2">
+        <i class="fa-solid fa-heart"></i>
       </button>
+      <?= $article->getLikesCount() ?>
     </form>
 
     <span class="flex items-center gap-2 text-gray-400">
@@ -36,14 +39,18 @@
 
           <div class="flex items-center gap-2 mt-2">
             <form method="post" action="/reader/comments/like">
+              <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
               <input type="hidden" name="comment_id" value="<?= $comment->getId() ?>">
-              <button class="text-gray-400 hover:text-red-500 transition flex items-center gap-2">
-                <i class="fa-solid fa-heart"></i> <?= $comment->getLikesCount() ?>
+              <input type="hidden" name="liked_by_reader" value="<?= $comment->isLikedByReader() ?>">
+              <button class="<?= $comment->isLikedByReader() ? 'text-red-500' : 'text-gray-400 hover:text-red-500' ?>">
+                <i class="fa-solid fa-heart"></i>
               </button>
+              <?= $comment->getLikesCount() ?>
             </form>
 
             <?php if ($_SESSION['user_id'] === $comment->getReaderId()): ?>
               <form method="post" action="/reader/comments/delete">
+                <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
                 <input type="hidden" name="comment_id" value="<?= $comment->getId() ?>">
                 <button class="text-red-400 text-sm">Delete</button>
               </form>
@@ -59,7 +66,7 @@
       <input type="hidden" name="article_id" value="<?= $article->getId() ?>">
       <textarea name="content" rows="4" class="w-full bg-gray-900 border border-gray-600 px-4 py-2 rounded" placeholder="Add a comment..."><?= $old['content'] ?? '' ?></textarea>
       <?php if(isset($errors['content'])): ?>
-        <div class="text-red-500"><?= htmlspecialchars($errors['content']) ?></div>
+        <p class="text-red-500 w-full transform -translate-y-1/2"><?= htmlspecialchars($errors['content']) ?></p>
       <?php endif; ?>
       <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded">Post Comment</button>
     </form>
